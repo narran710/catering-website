@@ -76,11 +76,10 @@ function Contact() {
 
             {/* Left Side */}
 
-            <div className="space-y-8">
-
+            <div className="bg-gradient-to-br from-orange-100 via-amber-50 to-orange-200 rounded-3xl shadow-xl p-8 md:p-10 space-y-8 border border-orange-200">
               <div className="flex gap-4">
 
-                <FaPhoneAlt className="text-orange-600 text-xl mt-1" />
+                <FaPhoneAlt className="text-orange-700 text-2xl mt-1" />
 
                 <div>
 

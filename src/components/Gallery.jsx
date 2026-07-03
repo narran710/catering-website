@@ -3,6 +3,8 @@ import FadeInSection from "./FadeInSection";
 import Loader from "./Loader";
 import SkeletonCard from "./SkeletonCard";
 import ErrorMessage from "./ErrorMessage";
+import ImageModal from "./ImageModal";
+
 import { client } from "../sanity/client";
 import { galleryQuery } from "../sanity/queries";
 import { urlFor } from "../sanity/image";
@@ -11,6 +13,8 @@ function Gallery() {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     async function fetchGallery() {
@@ -39,6 +43,8 @@ function Gallery() {
         className="bg-gray-50 py-20 px-6"
       >
         <div className="max-w-7xl mx-auto">
+
+          {/* Heading */}
 
           <div className="text-center mb-14">
 
@@ -80,15 +86,33 @@ function Gallery() {
 
                 <div
                   key={item._id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
                 >
 
-                  <img
-                    src={urlFor(item.image).width(700).height(500).url()}
-                    alt={item.title}
-                    loading="lazy"
-                    className="w-full h-64 object-cover"
-                  />
+                  <div className="overflow-hidden">
+
+                    <img
+                      src={urlFor(item.image).width(700).height(500).url()}
+                      alt={item.title}
+                      loading="lazy"
+                      onClick={() =>
+                        setSelectedImage({
+                          image: urlFor(item.image).width(1400).url(),
+                          title: item.title,
+                        })
+                      }
+                      className="
+                        w-full
+                        h-64
+                        object-cover
+                        cursor-pointer
+                        transition-transform
+                        duration-500
+                        hover:scale-110
+                      "
+                    />
+
+                  </div>
 
                   <div className="p-6">
 
@@ -108,6 +132,14 @@ function Gallery() {
 
             </div>
 
+          )}
+
+          {selectedImage && (
+            <ImageModal
+              image={selectedImage.image}
+              title={selectedImage.title}
+              onClose={() => setSelectedImage(null)}
+            />
           )}
 
         </div>
