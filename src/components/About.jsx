@@ -6,6 +6,8 @@ import {
   FaLeaf,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
+import Loader from "./Loader";
+import ErrorMessage from "./ErrorMessage";
 import { client } from "../sanity/client";
 import { aboutQuery } from "../sanity/queries";
 
@@ -38,26 +40,31 @@ const features = [
 
 function About() {
   const [about, setAbout] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchAbout() {
       try {
         const data = await client.fetch(aboutQuery);
         setAbout(data);
-      } catch (error) {
-        console.error("Error fetching About:", error);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load About section.");
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchAbout();
   }, []);
 
-  if (!about) {
-    return (
-      <section className="py-20 text-center">
-        Loading...
-      </section>
-    );
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
   }
 
   return (
@@ -70,7 +77,7 @@ function About() {
 
           <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-            {/* Left */}
+            {/* Left Side */}
 
             <div>
 
@@ -79,20 +86,20 @@ function About() {
               </p>
 
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
-                {about.heading}
+                {about?.heading}
               </h2>
 
               <p className="text-gray-600 leading-8 mt-6">
-                {about.description}
+                {about?.description}
               </p>
 
-              <button className="mt-8 bg-orange-600 hover:bg-orange-700 transition text-white px-7 py-3 rounded-lg font-semibold">
-                {about.buttonText}
+              <button className="mt-8 bg-orange-600 hover:bg-orange-700 transition duration-300 text-white px-7 py-3 rounded-lg font-semibold">
+                {about?.buttonText}
               </button>
 
             </div>
 
-            {/* Right */}
+            {/* Right Side */}
 
             <div className="grid sm:grid-cols-2 gap-6">
 
@@ -100,7 +107,7 @@ function About() {
 
                 <div
                   key={item.title}
-                  className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
+                  className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition duration-300"
                 >
 
                   <div className="mb-4">

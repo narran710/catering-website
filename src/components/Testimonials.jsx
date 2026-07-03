@@ -5,20 +5,24 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
+import Loader from "./Loader";
+import ErrorMessage from "./ErrorMessage";
 import { client } from "../sanity/client";
 import { testimonialsQuery } from "../sanity/queries";
 
 function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchTestimonials() {
       try {
         const data = await client.fetch(testimonialsQuery);
         setTestimonials(data);
-      } catch (error) {
-        console.error("Error fetching testimonials:", error);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load testimonials.");
       } finally {
         setLoading(false);
       }
@@ -26,6 +30,14 @@ function Testimonials() {
 
     fetchTestimonials();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
 
   return (
     <FadeInSection>
@@ -54,9 +66,9 @@ function Testimonials() {
 
           </div>
 
-          {loading ? (
-            <div className="text-center text-gray-500">
-              Loading testimonials...
+          {testimonials.length === 0 ? (
+            <div className="text-center text-gray-500 text-lg">
+              No testimonials available.
             </div>
           ) : (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -75,7 +87,9 @@ function Testimonials() {
                   </p>
 
                   <div className="flex mt-6 text-yellow-400">
-                    {Array.from({ length: item.rating || 5 }).map((_, index) => (
+                    {Array.from({
+                      length: item.rating || 5,
+                    }).map((_, index) => (
                       <FaStar key={index} />
                     ))}
                   </div>
