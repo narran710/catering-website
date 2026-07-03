@@ -1,15 +1,23 @@
+import { FaQuoteLeft, FaStar, FaUserCircle } from "react-icons/fa";
+
 const testimonials = [
   {
-    name: "Rahul",
-    review: "Excellent food and outstanding service!",
+    name: "Rahul Sharma",
+    event: "Wedding Reception",
+    review:
+      "The food was delicious and beautifully presented. Our guests loved every dish, and the service was exceptional.",
   },
   {
-    name: "Priya",
-    review: "Highly recommended for weddings and family functions.",
+    name: "Priya Nair",
+    event: "Birthday Celebration",
+    review:
+      "Everything was organized perfectly. The staff was friendly, punctual, and the menu exceeded our expectations.",
   },
   {
-    name: "Arjun",
-    review: "Professional staff with delicious food.",
+    name: "Arjun Kumar",
+    event: "Corporate Event",
+    review:
+      "Professional service with excellent food quality. We received many compliments from our employees and clients.",
   },
 ];
 
@@ -17,31 +25,70 @@ function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="py-20 px-6 bg-orange-50"
+      className="bg-white py-20 px-6"
     >
-      <h2 className="text-4xl font-bold text-center text-orange-600 mb-12">
-        Customer Testimonials
-      </h2>
+      <div className="max-w-7xl mx-auto">
 
-      <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
-        {testimonials.map((item) => (
-          <div
-            key={item.name}
-            className="bg-white rounded-xl shadow-md p-8"
-          >
-            <p className="text-yellow-500 text-xl mb-4">
-              ⭐⭐⭐⭐⭐
-            </p>
+        <div className="text-center mb-14">
+          <p className="text-orange-600 uppercase tracking-widest font-semibold">
+            Testimonials
+          </p>
 
-            <p className="text-gray-600 italic">
-              "{item.review}"
-            </p>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
+            What Our Customers Say
+          </h2>
 
-            <h4 className="mt-5 font-semibold text-orange-600">
-              - {item.name}
-            </h4>
-          </div>
-        ))}
+          <p className="text-gray-600 mt-5 max-w-3xl mx-auto">
+            Customer satisfaction is our highest priority. Here's what our clients
+            have to say about their catering experience.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-3">
+
+          {testimonials.map((item) => (
+
+            <div
+              key={item.name}
+              className="bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300"
+            >
+
+              <FaQuoteLeft className="text-3xl text-orange-600 mb-5" />
+
+              <p className="text-gray-600 leading-7 italic">
+                "{item.review}"
+              </p>
+
+              <div className="flex mt-6 text-yellow-400">
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStar />
+              </div>
+
+              <div className="flex items-center mt-8">
+
+                <FaUserCircle className="text-5xl text-gray-400 mr-4" />
+
+                <div>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    {item.name}
+                  </h3>
+
+                  <p className="text-gray-500 text-sm">
+                    {item.event}
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
       </div>
     </section>
   );

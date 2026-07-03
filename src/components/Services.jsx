@@ -1,37 +1,104 @@
+import {
+  FaGlassCheers,
+  FaBirthdayCake,
+  FaBuilding,
+  FaTree,
+  FaUtensils,
+  FaFire,
+} from "react-icons/fa";
+
 const services = [
-  "Wedding Catering",
-  "Birthday Parties",
-  "Corporate Events",
-  "Outdoor Catering",
-  "Buffet Service",
-  "Live Food Counters",
+  {
+    icon: <FaGlassCheers className="text-5xl text-orange-600" />,
+    title: "Wedding Catering",
+    description:
+      "Elegant catering services with customized menus for unforgettable wedding celebrations.",
+  },
+  {
+    icon: <FaBirthdayCake className="text-5xl text-orange-600" />,
+    title: "Birthday Parties",
+    description:
+      "Delicious food and desserts designed to make every birthday celebration special.",
+  },
+  {
+    icon: <FaBuilding className="text-5xl text-orange-600" />,
+    title: "Corporate Events",
+    description:
+      "Professional catering solutions for meetings, conferences, and office events.",
+  },
+  {
+    icon: <FaTree className="text-5xl text-orange-600" />,
+    title: "Outdoor Catering",
+    description:
+      "Complete outdoor catering services for family gatherings, festivals, and celebrations.",
+  },
+  {
+    icon: <FaUtensils className="text-5xl text-orange-600" />,
+    title: "Buffet Service",
+    description:
+      "Beautifully arranged buffet counters offering a wide variety of delicious dishes.",
+  },
+  {
+    icon: <FaFire className="text-5xl text-orange-600" />,
+    title: "Live Food Counters",
+    description:
+      "Freshly prepared dishes served live to delight your guests with an interactive experience.",
+  },
 ];
 
 function Services() {
   return (
     <section
       id="services"
-      className="py-20 px-6 bg-orange-50"
+      className="bg-white py-20 px-6"
     >
-      <h2 className="text-4xl font-bold text-center text-orange-600 mb-12">
-        Our Services
-      </h2>
+      <div className="max-w-7xl mx-auto">
 
-      <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((service) => (
-          <div
-            key={service}
-            className="bg-white rounded-xl shadow-md p-8 hover:shadow-xl transition"
-          >
-            <h3 className="text-2xl font-semibold text-gray-800">
-              {service}
-            </h3>
+        <div className="text-center mb-14">
 
-            <p className="mt-3 text-gray-600">
-              Professional catering service tailored for your special event.
-            </p>
-          </div>
-        ))}
+          <p className="text-orange-600 uppercase tracking-widest font-semibold">
+            Our Services
+          </p>
+
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
+            Catering For Every Occasion
+          </h2>
+
+          <p className="text-gray-600 mt-5 max-w-3xl mx-auto">
+            We provide premium catering services for all types of events,
+            ensuring exceptional food quality, elegant presentation,
+            and professional service.
+          </p>
+
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+
+          {services.map((service) => (
+
+            <div
+              key={service.title}
+              className="bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+            >
+
+              <div className="mb-6">
+                {service.icon}
+              </div>
+
+              <h3 className="text-2xl font-semibold text-gray-800">
+                {service.title}
+              </h3>
+
+              <p className="text-gray-600 mt-4 leading-7">
+                {service.description}
+              </p>
+
+            </div>
+
+          ))}
+
+        </div>
+
       </div>
     </section>
   );
