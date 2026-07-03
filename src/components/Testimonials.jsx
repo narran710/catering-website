@@ -1,4 +1,9 @@
-import { FaQuoteLeft, FaStar, FaUserCircle } from "react-icons/fa";
+import {
+  FaQuoteLeft,
+  FaStar,
+  FaUserCircle,
+} from "react-icons/fa";
+import FadeInSection from "./FadeInSection";
 
 const testimonials = [
   {
@@ -17,80 +22,91 @@ const testimonials = [
     name: "Arjun Kumar",
     event: "Corporate Event",
     review:
-      "Professional service with excellent food quality. We received many compliments from our employees and clients.",
+      "Professional service with excellent food quality. We received many compliments from our employees and guests.",
   },
 ];
 
 function Testimonials() {
   return (
-    <section
-      id="testimonials"
-      className="bg-white py-20 px-6"
-    >
-      <div className="max-w-7xl mx-auto">
+    <FadeInSection>
+      <section
+        id="testimonials"
+        className="bg-white py-20 px-6"
+      >
+        <div className="max-w-7xl mx-auto">
 
-        <div className="text-center mb-14">
-          <p className="text-orange-600 uppercase tracking-widest font-semibold">
-            Testimonials
-          </p>
+          {/* Heading */}
 
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
-            What Our Customers Say
-          </h2>
+          <div className="text-center mb-14">
 
-          <p className="text-gray-600 mt-5 max-w-3xl mx-auto">
-            Customer satisfaction is our highest priority. Here's what our clients
-            have to say about their catering experience.
-          </p>
-        </div>
+            <p className="text-orange-600 uppercase tracking-widest font-semibold">
+              Testimonials
+            </p>
 
-        <div className="grid gap-8 md:grid-cols-3">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
+              What Our Customers Say
+            </h2>
 
-          {testimonials.map((item) => (
+            <p className="text-gray-600 mt-5 max-w-3xl mx-auto leading-8">
+              Customer satisfaction is our greatest achievement.
+              Here's what our clients have to say about their experience
+              with Malligai Catering Services.
+            </p>
 
-            <div
-              key={item.name}
-              className="bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300"
-            >
+          </div>
 
-              <FaQuoteLeft className="text-3xl text-orange-600 mb-5" />
+          {/* Cards */}
 
-              <p className="text-gray-600 leading-7 italic">
-                "{item.review}"
-              </p>
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
-              <div className="flex mt-6 text-yellow-400">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-              </div>
+            {testimonials.map((item) => (
 
-              <div className="flex items-center mt-8">
+              <div
+                key={item.name}
+                className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+              >
 
-                <FaUserCircle className="text-5xl text-gray-400 mr-4" />
+                <FaQuoteLeft className="text-3xl text-orange-600 mb-5" />
 
-                <div>
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    {item.name}
-                  </h3>
+                <p className="text-gray-600 italic leading-7">
+                  "{item.review}"
+                </p>
 
-                  <p className="text-gray-500 text-sm">
-                    {item.event}
-                  </p>
+                <div className="flex mt-6 text-yellow-400">
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                  <FaStar />
+                </div>
+
+                <div className="flex items-center mt-8">
+
+                  <FaUserCircle className="text-5xl text-gray-400 mr-4" />
+
+                  <div>
+
+                    <h3 className="text-lg font-semibold text-gray-800">
+                      {item.name}
+                    </h3>
+
+                    <p className="text-sm text-gray-500">
+                      {item.event}
+                    </p>
+
+                  </div>
+
                 </div>
 
               </div>
 
-            </div>
+            ))}
 
-          ))}
+          </div>
 
         </div>
-
-      </div>
-    </section>
+      </section>
+    </FadeInSection>
   );
 }
 
