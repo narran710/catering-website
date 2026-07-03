@@ -1,32 +1,32 @@
+import { useEffect, useState } from "react";
 import {
   FaQuoteLeft,
   FaStar,
   FaUserCircle,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
-
-const testimonials = [
-  {
-    name: "Rahul Sharma",
-    event: "Wedding Reception",
-    review:
-      "The food was delicious and beautifully presented. Our guests loved every dish, and the service was exceptional.",
-  },
-  {
-    name: "Priya Nair",
-    event: "Birthday Celebration",
-    review:
-      "Everything was organized perfectly. The staff was friendly, punctual, and the menu exceeded our expectations.",
-  },
-  {
-    name: "Arjun Kumar",
-    event: "Corporate Event",
-    review:
-      "Professional service with excellent food quality. We received many compliments from our employees and guests.",
-  },
-];
+import { client } from "../sanity/client";
+import { testimonialsQuery } from "../sanity/queries";
 
 function Testimonials() {
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const data = await client.fetch(testimonialsQuery);
+        setTestimonials(data);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTestimonials();
+  }, []);
+
   return (
     <FadeInSection>
       <section
@@ -49,60 +49,61 @@ function Testimonials() {
 
             <p className="text-gray-600 mt-5 max-w-3xl mx-auto leading-8">
               Customer satisfaction is our greatest achievement.
-              Here's what our clients have to say about their experience
-              with Malligai Catering Services.
+              Here's what our customers say about Malligai Catering Services.
             </p>
 
           </div>
 
-          {/* Cards */}
+          {loading ? (
+            <div className="text-center text-gray-500">
+              Loading testimonials...
+            </div>
+          ) : (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((item) => (
 
-            {testimonials.map((item) => (
+                <div
+                  key={item._id}
+                  className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+                >
 
-              <div
-                key={item.name}
-                className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
-              >
+                  <FaQuoteLeft className="text-3xl text-orange-600 mb-5" />
 
-                <FaQuoteLeft className="text-3xl text-orange-600 mb-5" />
+                  <p className="text-gray-600 italic leading-7">
+                    "{item.review}"
+                  </p>
 
-                <p className="text-gray-600 italic leading-7">
-                  "{item.review}"
-                </p>
+                  <div className="flex mt-6 text-yellow-400">
+                    {Array.from({ length: item.rating || 5 }).map((_, index) => (
+                      <FaStar key={index} />
+                    ))}
+                  </div>
 
-                <div className="flex mt-6 text-yellow-400">
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                  <FaStar />
-                </div>
+                  <div className="flex items-center mt-8">
 
-                <div className="flex items-center mt-8">
+                    <FaUserCircle className="text-5xl text-gray-400 mr-4" />
 
-                  <FaUserCircle className="text-5xl text-gray-400 mr-4" />
+                    <div>
 
-                  <div>
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {item.customerName}
+                      </h3>
 
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {item.name}
-                    </h3>
+                      <p className="text-sm text-gray-500">
+                        {item.event}
+                      </p>
 
-                    <p className="text-sm text-gray-500">
-                      {item.event}
-                    </p>
+                    </div>
 
                   </div>
 
                 </div>
 
-              </div>
+              ))}
 
-            ))}
-
-          </div>
+            </div>
+          )}
 
         </div>
       </section>

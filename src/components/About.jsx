@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   FaUtensils,
   FaUserTie,
@@ -5,6 +6,8 @@ import {
   FaLeaf,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
+import { client } from "../sanity/client";
+import { aboutQuery } from "../sanity/queries";
 
 const features = [
   {
@@ -34,45 +37,72 @@ const features = [
 ];
 
 function About() {
+  const [about, setAbout] = useState(null);
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        const data = await client.fetch(aboutQuery);
+        setAbout(data);
+      } catch (error) {
+        console.error("Error fetching About:", error);
+      }
+    }
+
+    fetchAbout();
+  }, []);
+
+  if (!about) {
+    return (
+      <section className="py-20 text-center">
+        Loading...
+      </section>
+    );
+  }
+
   return (
     <FadeInSection>
-      <section id="about" className="bg-gray-50 py-20 px-6">
+      <section
+        id="about"
+        className="bg-gray-50 py-20 px-6"
+      >
         <div className="max-w-7xl mx-auto">
+
           <div className="grid lg:grid-cols-2 gap-14 items-center">
-            {/* Left Side */}
+
+            {/* Left */}
+
             <div>
+
               <p className="text-orange-600 font-semibold uppercase tracking-wider">
                 About Us
               </p>
 
               <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mt-3">
-                Creating Memorable Dining Experiences
+                {about.heading}
               </h2>
 
               <p className="text-gray-600 leading-8 mt-6">
-                We specialize in premium catering services for weddings,
-                birthdays, corporate events, family gatherings, and
-                celebrations of every size.
-              </p>
-
-              <p className="text-gray-600 leading-8 mt-5">
-                Our experienced team combines exceptional taste,
-                elegant presentation, and professional service to make
-                every event unforgettable.
+                {about.description}
               </p>
 
               <button className="mt-8 bg-orange-600 hover:bg-orange-700 transition text-white px-7 py-3 rounded-lg font-semibold">
-                Learn More
+                {about.buttonText}
               </button>
+
             </div>
 
-            {/* Right Side */}
+            {/* Right */}
+
             <div className="grid sm:grid-cols-2 gap-6">
+
               {features.map((item) => (
+
                 <div
                   key={item.title}
                   className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300"
                 >
+
                   <div className="mb-4">
                     {item.icon}
                   </div>
@@ -84,10 +114,15 @@ function About() {
                   <p className="text-gray-600 mt-3 leading-7">
                     {item.description}
                   </p>
+
                 </div>
+
               ))}
+
             </div>
+
           </div>
+
         </div>
       </section>
     </FadeInSection>
