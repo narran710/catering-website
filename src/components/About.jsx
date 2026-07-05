@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   FaUtensils,
   FaUserTie,
@@ -6,10 +5,6 @@ import {
   FaLeaf,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
-import { client } from "../sanity/client";
-import { aboutQuery } from "../sanity/queries";
 
 const features = [
   {
@@ -38,35 +33,7 @@ const features = [
   },
 ];
 
-function About() {
-  const [about, setAbout] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function fetchAbout() {
-      try {
-        const data = await client.fetch(aboutQuery);
-        setAbout(data);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load About section.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchAbout();
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <ErrorMessage message={error} />;
-  }
-
+function About({ about }) {
   return (
     <FadeInSection>
       <section

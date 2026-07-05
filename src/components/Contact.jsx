@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -7,45 +6,8 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
-import { client } from "../sanity/client";
-import { contactQuery, socialQuery } from "../sanity/queries";
 
-function Contact() {
-  const [contact, setContact] = useState(null);
-  const [social, setSocial] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function fetchContact() {
-      try {
-        const contactData = await client.fetch(contactQuery);
-        const socialData = await client.fetch(socialQuery);
-
-        setContact(contactData);
-        setSocial(socialData);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load contact information.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchContact();
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <ErrorMessage message={error} />;
-  }
-
+function Contact({ contact, social }) {
   return (
     <FadeInSection>
       <section
@@ -74,9 +36,10 @@ function Contact() {
 
           <div className="grid lg:grid-cols-2 gap-12">
 
-            {/* Left Side */}
+            {/* Contact Card */}
 
             <div className="bg-gradient-to-br from-orange-100 via-amber-50 to-orange-200 rounded-3xl shadow-xl p-8 md:p-10 space-y-8 border border-orange-200">
+
               <div className="flex gap-4">
 
                 <FaPhoneAlt className="text-orange-700 text-2xl mt-1" />
@@ -88,10 +51,10 @@ function Contact() {
                   </h3>
 
                   <a
-                    href={`tel:${contact.phone}`}
-                    className="text-gray-600 hover:text-orange-600 transition"
+                    href={`tel:${contact?.phone}`}
+                    className="text-gray-700 hover:text-orange-600 transition"
                   >
-                    {contact.phone}
+                    {contact?.phone}
                   </a>
 
                 </div>
@@ -100,7 +63,7 @@ function Contact() {
 
               <div className="flex gap-4">
 
-                <FaEnvelope className="text-orange-600 text-xl mt-1" />
+                <FaEnvelope className="text-orange-700 text-2xl mt-1" />
 
                 <div>
 
@@ -109,10 +72,10 @@ function Contact() {
                   </h3>
 
                   <a
-                    href={`mailto:${contact.email}`}
-                    className="text-gray-600 hover:text-orange-600 transition"
+                    href={`mailto:${contact?.email}`}
+                    className="text-gray-700 hover:text-orange-600 transition"
                   >
-                    {contact.email}
+                    {contact?.email}
                   </a>
 
                 </div>
@@ -121,7 +84,7 @@ function Contact() {
 
               <div className="flex gap-4">
 
-                <FaMapMarkerAlt className="text-orange-600 text-xl mt-1" />
+                <FaMapMarkerAlt className="text-orange-700 text-2xl mt-1" />
 
                 <div>
 
@@ -129,8 +92,8 @@ function Contact() {
                     Address
                   </h3>
 
-                  <p className="text-gray-600 whitespace-pre-line">
-                    {contact.address}
+                  <p className="text-gray-700 whitespace-pre-line">
+                    {contact?.address}
                   </p>
 
                 </div>
@@ -139,7 +102,7 @@ function Contact() {
 
               <div className="flex gap-4">
 
-                <FaClock className="text-orange-600 text-xl mt-1" />
+                <FaClock className="text-orange-700 text-2xl mt-1" />
 
                 <div>
 
@@ -147,8 +110,8 @@ function Contact() {
                     Business Hours
                   </h3>
 
-                  <p className="text-gray-600">
-                    {contact.businessHours}
+                  <p className="text-gray-700">
+                    {contact?.businessHours}
                   </p>
 
                 </div>
@@ -159,7 +122,7 @@ function Contact() {
 
                 <div className="flex gap-4">
 
-                  <FaInstagram className="text-orange-600 text-xl mt-1" />
+                  <FaInstagram className="text-orange-700 text-2xl mt-1" />
 
                   <div>
 
@@ -170,8 +133,8 @@ function Contact() {
                     <a
                       href={social.instagram}
                       target="_blank"
-                      rel="noreferrer"
-                      className="text-gray-600 hover:text-orange-600 transition"
+                      rel="noopener noreferrer"
+                      className="text-gray-700 hover:text-orange-600 transition"
                     >
                       Follow Us
                     </a>
@@ -184,11 +147,11 @@ function Contact() {
 
             </div>
 
-            {/* Right Side */}
+            {/* Google Map */}
 
             <div>
 
-              {contact.googleMapsUrl ? (
+              {contact?.googleMapsUrl ? (
 
                 <iframe
                   src={contact.googleMapsUrl}
@@ -200,7 +163,7 @@ function Contact() {
 
               ) : (
 
-                <div className="w-full h-[450px] rounded-2xl bg-gray-200 flex items-center justify-center">
+                <div className="w-full h-[450px] rounded-2xl bg-gray-200 flex items-center justify-center text-gray-600">
                   Google Map Not Available
                 </div>
 

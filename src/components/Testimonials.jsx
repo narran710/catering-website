@@ -1,44 +1,11 @@
-import { useEffect, useState } from "react";
 import {
   FaQuoteLeft,
   FaStar,
   FaUserCircle,
 } from "react-icons/fa";
 import FadeInSection from "./FadeInSection";
-import Loader from "./Loader";
-import ErrorMessage from "./ErrorMessage";
-import { client } from "../sanity/client";
-import { testimonialsQuery } from "../sanity/queries";
 
-function Testimonials() {
-  const [testimonials, setTestimonials] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    async function fetchTestimonials() {
-      try {
-        const data = await client.fetch(testimonialsQuery);
-        setTestimonials(data);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load testimonials.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchTestimonials();
-  }, []);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <ErrorMessage message={error} />;
-  }
-
+function Testimonials({ testimonials }) {
   return (
     <FadeInSection>
       <section
@@ -67,10 +34,13 @@ function Testimonials() {
           </div>
 
           {testimonials.length === 0 ? (
+
             <div className="text-center text-gray-500 text-lg">
               No testimonials available.
             </div>
+
           ) : (
+
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
               {testimonials.map((item) => (
@@ -117,6 +87,7 @@ function Testimonials() {
               ))}
 
             </div>
+
           )}
 
         </div>

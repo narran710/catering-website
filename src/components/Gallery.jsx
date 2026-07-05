@@ -1,40 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FadeInSection from "./FadeInSection";
-import Loader from "./Loader";
-import SkeletonCard from "./SkeletonCard";
-import ErrorMessage from "./ErrorMessage";
 import ImageModal from "./ImageModal";
-
-import { client } from "../sanity/client";
-import { galleryQuery } from "../sanity/queries";
 import { urlFor } from "../sanity/image";
 
-function Gallery() {
-  const [gallery, setGallery] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
+function Gallery({ gallery }) {
   const [selectedImage, setSelectedImage] = useState(null);
-
-  useEffect(() => {
-    async function fetchGallery() {
-      try {
-        const data = await client.fetch(galleryQuery);
-        setGallery(data);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load gallery.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchGallery();
-  }, []);
-
-  if (error) {
-    return <ErrorMessage message={error} />;
-  }
 
   return (
     <FadeInSection>
@@ -64,15 +34,7 @@ function Gallery() {
 
           </div>
 
-          {loading ? (
-
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <SkeletonCard key={item} />
-              ))}
-            </div>
-
-          ) : gallery.length === 0 ? (
+          {gallery.length === 0 ? (
 
             <div className="text-center text-gray-500 text-lg">
               No gallery images available.
@@ -92,24 +54,25 @@ function Gallery() {
                   <div className="overflow-hidden">
 
                     <img
-                      src={urlFor(item.image).width(700).height(500).url()}
+                      src={urlFor(item.image)
+                        .width(600)
+                        .height(450)
+                        .auto("format")
+                        .quality(80)
+                        .url()}
                       alt={item.title}
                       loading="lazy"
                       onClick={() =>
                         setSelectedImage({
-                          image: urlFor(item.image).width(1400).url(),
+                          image: urlFor(item.image)
+                            .width(1400)
+                            .auto("format")
+                            .quality(90)
+                            .url(),
                           title: item.title,
                         })
                       }
-                      className="
-                        w-full
-                        h-64
-                        object-cover
-                        cursor-pointer
-                        transition-transform
-                        duration-500
-                        hover:scale-110
-                      "
+                      className="w-full h-80 object-cover cursor-pointer transition-transform duration-500 hover:scale-110"
                     />
 
                   </div>
